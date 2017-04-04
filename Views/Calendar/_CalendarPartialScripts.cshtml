@@ -1,0 +1,217 @@
+﻿<environment names="Development">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/fullcalendar/dist/fullcalendar.css" />
+    
+    <link rel="stylesheet" href="~/lib/sweetalert/dist/sweetalert.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/sweetalert/dist/sweetalert-dev.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+
+    <script src="~/lib/moment/moment.js"></script>
+    <script src="~/lib/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="~/lib/fullcalendar/dist/locale-all.js"></script>
+    <script src="~/js/app/Calendar/vm.Calendar.js"></script>
+    <script>
+        //initialize Callendar
+
+
+    var langSwap = localStorage.getItem("langSwap");
+    var minDate = moment().add(7, 'days');
+    $('#workshopBookingView').fullCalendar({
+        header: {
+            left: '',
+            center: 'prev title next',
+            right: ''
+        }, views: {
+            agendaEightDays: {
+                type: 'agenda',
+                duration: { days: 8 },
+                buttonText: '7 day'
+            }
+        },
+        loading: function (isLoading, view) {
+            if (isLoading) {
+                $('#loading-image').show();
+            } else {
+                $('#loading-image').hide();
+
+            }
+        },
+        timeFormat: 'h:mm a',
+        locale: 'en',
+        defaultView: 'agendaEightDays',
+        defaultDate: minDate,
+        firstDay: minDate.day(),
+        editable: false,
+        selectable: false,
+        allDaySlot: false,
+        slotLabelFormat :'h:mm a',
+        scrollTime: '08:00:00',
+        eventSources: [
+        {
+            url: '/Calendar/Get/' + langSwap,
+            error: function () {
+                sweetAlert(Resources.Oops, Resources.errorFetchingEvents, "error");
+            }
+        }
+        ],
+        viewRender: function (currentView) {
+
+            // Past
+            if (minDate >= currentView.start && minDate <= currentView.end) {
+                $(".fc-prev-button").prop('disabled', true);
+                $(".fc-prev-button").addClass('fc-state-disabled');
+            }
+            else {
+                $(".fc-prev-button").removeClass('fc-state-disabled');
+                $(".fc-prev-button").prop('disabled', false);
+            }
+
+        },
+        eventRender: function (event, element) {
+            if (event.title.length > 0) {
+                $(element).css('cursor', 'pointer')
+            } else {
+                $(element).css('cursor', 'auto')
+            }
+            element.click(function () {
+                $('#workshopID').val(event.id);
+                $('#supportedWorkshopLanguage').empty();
+                if (event.languageId) {
+                    $("#supportedWorkshopLanguage").prop("disabled", true);
+                } else {
+                    $("#supportedWorkshopLanguage").prop("disabled", false);
+                }
+                if (event.title.length > 0) {
+                    var supportedLanguages = event.supportedLanguages;
+                    for (var language in supportedLanguages) {
+                        if (supportedLanguages.hasOwnProperty(language)) {
+                            var option = $('<option />');
+                            option.attr('value', language).text(supportedLanguages[language]);
+                            $('#supportedWorkshopLanguage').append(option);
+                        }
+                    }
+
+                    $('#fullCalModal').modal();
+                    $('#fullCalModal').on('hidden.bs.modal', function () {
+                        $(this).find('form').trigger('reset');
+                        $(this).find('form').find('span').text('');
+                        $('#emailErrorReg').text('');
+                        $('#slotErrorReg').text('');
+                    })
+                }
+            });
+        }
+    });
+
+    </script>
+</environment>
+<environment names="Staging,Production">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/fullcalendar/dist/fullcalendar.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert/dist/sweetalert.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/sweetalert/dist/sweetalert-dev.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/moment/moment.js"></script>
+    <script src="~/lib/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="~/lib/fullcalendar/dist/locale-all.js"></script>
+    <script src="~/js/app/Calendar/vm.Calendar.js"></script>
+    <script>
+        //initialize Callendar
+
+
+    var langSwap = localStorage.getItem("langSwap");
+    var minDate = moment().add(7, 'days');
+    $('#workshopBookingView').fullCalendar({
+        header: {
+            left: '',
+            center: 'prev title next',
+            right: ''
+        }, views: {
+            agendaEightDays: {
+                type: 'agenda',
+                duration: { days: 8 },
+                buttonText: '7 day'
+            }
+        },
+        loading: function (isLoading, view) {
+            if (isLoading) {
+                $('#loading-image').show();
+            } else {
+                $('#loading-image').hide();
+
+            }
+        },
+        timeFormat: 'h:mm a',
+        locale: 'en',
+        defaultView: 'agendaEightDays',
+        defaultDate: minDate,
+        firstDay: minDate.day(),
+        editable: false,
+        selectable: false,
+        allDaySlot: false,
+
+        scrollTime: '08:00:00',
+        eventSources: [
+        {
+            url: '/Calendar/Get/' + langSwap,
+            error: function () {
+                sweetAlert(Resources.Oops, Resources.errorFetchingEvents, "error");
+            }
+        }
+        ],
+        viewRender: function (currentView) {
+
+            // Past
+            if (minDate >= currentView.start && minDate <= currentView.end) {
+                $(".fc-prev-button").prop('disabled', true);
+                $(".fc-prev-button").addClass('fc-state-disabled');
+            }
+            else {
+                $(".fc-prev-button").removeClass('fc-state-disabled');
+                $(".fc-prev-button").prop('disabled', false);
+            }
+
+        },
+        eventRender: function (event, element) {
+            if (event.title.length > 0) {
+                $(element).css('cursor', 'pointer')
+            } else {
+                $(element).css('cursor', 'auto')
+            }
+            element.click(function () {
+                $('#workshopID').val(event.id);
+                $('#supportedWorkshopLanguage').empty();
+                if (event.languageId) {
+                    $("#supportedWorkshopLanguage").prop("disabled", true);
+                } else {
+                    $("#supportedWorkshopLanguage").prop("disabled", false);
+                }
+                if (event.title.length > 0) {
+                    var supportedLanguages = event.supportedLanguages;
+                    for (var language in supportedLanguages) {
+                        if (supportedLanguages.hasOwnProperty(language)) {
+                            var option = $('<option />');
+                            option.attr('value', language).text(supportedLanguages[language]);
+                            $('#supportedWorkshopLanguage').append(option);
+                        }
+                    }
+
+                    $('#fullCalModal').modal();
+                    $('#fullCalModal').on('hidden.bs.modal', function () {
+                        $(this).find('form').trigger('reset');
+                        $(this).find('form').find('span').text('');
+                        $('#emailErrorReg').text('');
+                        $('#slotErrorReg').text('');
+                    })
+                }
+            });
+        }
+    });
+
+    </script>
+    </environment>

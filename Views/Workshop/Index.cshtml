@@ -1,0 +1,129 @@
+﻿@model List<NeuhausWorkshop.Business.Entities.Workshop>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="~/lib/sweetalert/dist/sweetalert.css" />
+</head>
+<body>
+
+    <div class="workshopList">
+
+        <h1 class="pageTitle">@SharedHtmlLocalizer["WorkshoplistHeader"]</h1>
+        <h4><b>@SharedHtmlLocalizer["DescriptionHeader"]</b></h4>
+        <p>@SharedHtmlLocalizer["DescriptionBody"]</p>
+        <div class="counter pull-left">@((Model.Count == 0) ? @SharedHtmlLocalizer["NoWorkshop"].Value : "")</div>
+        <div class="acc_control"> 
+            <div class="counter"><i class="fa fa-caret-right"></i> (@Model.Count)@SharedHtmlLocalizer["ItemsCount"] </div>
+            <button id="OpenCreateModal" class="btn btn_custom btn_popup" data-toggle="modal" data-target="#creatWorkshop"><i class="fa fa-plus-circle"></i> @SharedHtmlLocalizer["CreateWorkshop"] </button>
+            <button class="btn btn_custom btn_expandAll" @((Model.Count==0)?"disabled":"") ><i class="fa fa-expand"></i> @SharedHtmlLocalizer["ExpandAll"] </button>
+            <button class="btn btn_custom" onclick="$('.panel-collapse').collapse('show'); $('.LoginBtn').hide(); setTimeout(function () { window.print(); $('.LoginBtn').show(); }, 500)"  @((Model.Count==0)?"disabled":"")  ><i class="fa fa-print"></i> @SharedHtmlLocalizer["Print"] </button>            
+        </div>
+     
+        <div class="panel-group workshopAcc" id="accordion" role="tablist" aria-multiselectable="true">
+            @foreach (var item in Model)
+            {
+                var color = item.StatusName == "Free" ? "green" : (item.StatusName == "Closed" ? "red" : "blue");
+                <div class="panel panel-default" id="Item_@item.Id">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <div class="pull-left">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#@item.Id" class="collapseBtn" aria-expanded="true" aria-controls="collapseOne">
+                                <i class="more-less fa fa-plus-square-o"></i>
+                            </a>
+                            <ul class="acc_metadata">
+                                @* <li><h4>@item.Date</h4> </li>*@
+                                <li><i class="fa fa-calendar"></i>@item.Date.Value.ToString("dd/MM/yyyy")</li>
+                                <li><i class="fa fa-clock-o"></i>@item.TimeFrom.Value.ToString(@"hh\:mm")<span>to</span> <i class="fa fa-clock-o"></i> @item.TimeTo.Value.ToString(@"hh\:mm") </li>
+                                <li><i class="fa fa-language"></i> @item.LanguageName</li>
+                                <li> @SharedHtmlLocalizer["Status"] : <span class="status @color">@item.StatusName</span></li>
+                                <li> @SharedHtmlLocalizer["AvailableSeats"] : <span class="status blue">@(item.SlotCount - item.Registrations.Sum(a => a.Slots))</span></li>
+                            </ul>
+                        </div>
+                        <div class="pull-right">
+                            <div class="attendees"><i class="fa fa-users"></i> @SharedHtmlLocalizer["AttendeesCount"] (@item.Registrations.Sum(a => a.Slots))</div>
+                            <a href="#" class="printItem" onclick="PrintElem('Item_@item.Id')"><i class="fa fa-print"></i></a>
+                            <a href="" data-toggle="modal" data-target="#DeleteWorkshopModal" WorkshopId="@item.Id" onclick="$('#WorkshopId').val($(this).attr('WorkshopId'))" class="delete"><i class="fa fa-trash"></i></a>
+
+                        </div>
+                    </div>
+                    <div id="@item.Id" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <h5 class="tableTitle">@SharedHtmlLocalizer["TableTitle"]</h5>
+
+                            <div class="table-responsive">
+                                <table class="table customTable">
+                                    @foreach (var regitem in item.Registrations)
+                                    {
+
+                                        <tr>
+                                            <th width="15%"><i class="fa fa-caret-right"></i>@regitem.FirstName  @regitem.LastName</th>
+                                            <td width="15%"><i class="fa fa-phone"></i> @regitem.Phone</td>
+                                            <td width="30%"><i class="fa fa-envelope-o"></i> @regitem.Email</td>
+                                            <td width="15%"><i class="fa fa-users"></i>attendees(@regitem.Slots)</td>
+                                            <td><a href="#" AttendeeId="@regitem.Id" onclick="$('#AttendeeId').val($(this).attr('AttendeeId'))" class="cancelBtn customTooltip" data-toggle="modal" data-target="#DeleteAttendeeModal" title="cancel booking"><i class="fa fa-times"></i></a></td>
+
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+
+        </div><!-- panel-group -->
+        
+    </div>
+
+    @await Html.PartialAsync("_Create", (NeuhausWorkshop.Business.Entities.POCO.WorkshopVm)ViewData["WorkshopVM"])
+
+    <div id="DeleteWorkshopModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@SharedHtmlLocalizer["DeleteWorkshop"]</h4>
+                </div>
+                <div id="modalBody" class="modal-body">
+                    <p>@SharedHtmlLocalizer["DeleteWorkshopConfirmationMessage"]</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn_custom" data-dismiss="modal">@SharedHtmlLocalizer["Cancel"]</button>
+                    <button type="submit" class="btn btn_custom btn_popup" onclick="DeleteWorkshop()">@SharedHtmlLocalizer["BtnDelete"]</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="DeleteAttendeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@SharedHtmlLocalizer["DeleteAttendee"]</h4>
+                </div>
+                <div id="modalBody" class="modal-body">
+                    <p>@SharedHtmlLocalizer["DeleteAttendeeConfirmationMessage"]</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn_custom" data-dismiss="modal">@SharedHtmlLocalizer["Cancel"]</button>
+                    <button type="submit" class="btn btn_custom btn_popup" onclick="DeleteAttendee()">@SharedHtmlLocalizer["BtnDelete"]</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <input type="hidden" id="WorkshopId" />
+    <input type="hidden" id="AttendeeId" />
+
+    <script src="~/lib/sweetalert/dist/sweetalert-dev.js"></script>
+    <script src="~/js/select2.js"></script>
+    <script src="~/js/app/workshop/vm.workshop.js"></script>
+</body>
+</html>

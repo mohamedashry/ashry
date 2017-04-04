@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script>
+
+    function ChangeLang(lang)
+    {
+        localStorage.setItem("langSwap", lang);
+        window.location.href = '/Calendar/';
+    }
+</script>
+
+<div class="siteBody">
+    <div class="container">
+        <div class="pageBody">
+            <div class="workshopList">
+                <h1 class="pageTitle Noborder">Workshops Managements</h1>
+
+                <div class="workshopMangContainer">
+                    <div class="col-sm-12 col-xs-12 manageBlock">
+                        <h3 class="blockTitle">Welkom op de registratiepagina voor een workshop van Neuhaus Brussel - l’Atelier de Neuhaus.</h3>
+                        <p>
+                            Gelieve op de knop “Inschrijven” te drukken indien u wenst deel te nemen aan een Nederlandstalige sessie.
+
+                            Bedankt voor uw registratie,
+
+                            l’Atelier de Neuhaus
+
+                        </p>
+                        <button class="btn btn_custom" onclick="ChangeLang(1)"> Inschrijven </button>
+
+                      
+
+
+
+                    </div>
+                    <div class="col-sm-12 col-xs-12 manageBlock">
+                        <h3 class="blockTitle">Bienvenue sur la page d’enregistrement pour un workshop de Neuhaus Brussels - l’Atelier de Neuhaus.</h3>
+                        <p>
+                            Veuillez cliquer sur le bouton « Inscrire » si vous souhaitez participez à un workshop en Français.
+
+                            Merci pour votre inscription,
+
+                            l’Atelier de Neuhaus
+
+                        </p>
+                        <button class="btn btn_custom" onclick="ChangeLang(2)"> Inscrire </button>
+
+                    </div>
+                    <div class="col-sm-12 col-xs-12 manageBlock">
+                        <h3 class="blockTitle">Welcome to the subscription page of the workshops of Neuhaus Brussels - l’Atelier de Neuhaus.</h3>
+                        <p>
+                            Please press the “Subscribe” button if you want to register for an English workshop.
+
+                            Thank you for registering,
+
+                            l’Atelier de Neuhaus
+
+                        </p>
+                        <button class="btn btn_custom" onclick="ChangeLang(3)"> Subscribe</button>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,51 @@
+﻿@model NeuhausWorkshop.Business.Entities.POCO.WorkshopVm
+@{     
+    ViewData["Title"] = "Add";
+}
+@{ 
+    var jsonData = Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+}
+
+
+<h2>Add</h2>
+
+
+
+<div class="inline" >
+    <div class="row">
+        <div class="input-group date inline" id="datetimepicker">
+            <input type="text" class="form-control dateinput" data-bind="value:Data.Date" onkeydown="return false;" required/>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+</div>
+<span data-bind="validationMessage: Data.Date" class="text-danger field-validation-error"></span>
+
+<input type="time" data-bind="value:Data.TimeFrom,event:{change:$root.DateFromChange}" class="form-control input-small" required/>
+<span data-bind="validationMessage: Data.TimeFrom" class="text-danger field-validation-error"></span>
+<input type="time" data-bind="value:Data.TimeTo" class="form-control input-small" disabled/>
+<span data-bind="validationMessage: Data.TimeTo" class="text-danger field-validation-error"></span>
+
+<input type="radio" name="Language" value="1" data-bind="checked: Data.Language"> Du
+<input type="radio" name="Language" value="2" data-bind="checked: Data.Language"> Fr<br />
+<span data-bind="validationMessage: Data.Language" class="text-danger field-validation-error"></span>
+
+<input type="button" data-bind="click:$root.SaveWorkshop" value="Save"/>
+
+
+<script>
+    '';
+    workshopModel = '@Html.Raw(jsonData)';
+</script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/bootstrap.js"></script>
+<script src="~/lib/moment/moment.js"></script>
+<script src="~/js/bootstrap-datetimepicker.js"></script>
+<script src="~/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+<script src="~/lib/knockout/dist/knockout.js"></script>
+<script src="~/lib/knockout.mapping/knockout.mapping.js"></script>
+<script src="~/lib/Knockout-Validation/Dist/knockout.validation.js"></script>
+<script src="~/js/app/workshop/vm.workshop.js"></script>
+<script src="~/js/app/workshop/main.js"></script>

@@ -1,0 +1,42 @@
+﻿@model NeuhausWorkshop.Business.Entities.Registration
+@{
+    ViewData["Title"] = @SharedHtmlLocalizer["CalendarPageTitle"];
+    //Layout = null;
+}
+<div id="loading-image" style="display: none;width: 100%;height: 100%;position: absolute;left: 0;top: 0;background: rgba(255,255,255,.7);z-index: 2;"><img style="position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 460px 0 0 -64px;" id="loading-image-img" src="~/images/loader-new.gif" alt="Loading..."></div>
+<div class="siteBody">
+    <div class="container">
+        <div class="pageBody">
+            <div class="workshopList">
+                <h1 class="pageTitle"> @SharedHtmlLocalizer["ViewCalendarTitle"] </h1>
+
+
+             
+
+                <div class="acc_control">
+
+                    <a href="/home/index" class="btn btn_custom btn_popup"><i class="fa fa-arrow-circle-left"></i> back </a>
+
+                </div>
+                <div class="calendarColor">
+                    <ul>
+                        <li><span class="red"></span> closed</li>
+                        <li><span class="blue"></span> half free</li>
+                        <li><span class="green"></span> free</li>
+                    </ul>
+                </div>
+                <div class="Calendar">
+                    <div id="workshopBookingView" ></div>
+                </div>
+            </div>
+            @await Html.PartialAsync("_CalendarModal")
+        </div>
+    </div>
+
+</div>
+
+@await Html.PartialAsync("_CalendarPartialScripts");
+

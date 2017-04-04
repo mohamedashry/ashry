@@ -1,0 +1,89 @@
+﻿@model NeuhausWorkshop.Business.Entities.Registration
+
+<div id="fullCalModal" class="modal fade customModal" role="dialog">
+    <form id="calendarSchduleForm">
+        <div class="modal-dialog ">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@SharedHtmlLocalizer["Registerworkshop"]</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-custom">
+                            <div class='col-sm-12'>
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="control-label"></label> *
+                                    <input asp-for="FirstName"  class="form-control" />
+                                    <span asp-validation-for="FirstName"  class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class='col-sm-12'>
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="control-label"></label> *
+
+                                        <input asp-for="LastName" class="form-control" />
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class='col-sm-12'>
+                                <div class="form-group">
+                                    <label  class="control-label"> @SharedHtmlLocalizer["Language"]</label> *
+
+                                    <select id="supportedWorkshopLanguage" class="form-control" >
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class='col-sm-12'>
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label> *
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" id="emailErrorReg" class="text-danger"></span>
+
+                                </div>
+
+                            </div>
+                            <div class='col-sm-12'>
+                                <div class="form-group">
+                                    <label asp-for="Phone" class="control-label"></label> *
+                                    <input asp-for="Phone" class="form-control" />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                    
+
+                                </div>
+
+                            </div>
+                            <div class='col-sm-12'>
+                                <div class="form-group">
+                                    <label asp-for="Slots" class="control-label"></label> *
+                                    
+                                    <input asp-for="Slots" value="1" onkeydown="return FilterInput(event)" onpaste="handlePaste(event)"  class="form-control" />
+                                    <span asp-validation-for="Slots" id="slotErrorReg" class="text-danger"></span>
+                                    <input asp-for="WorkshopId"  id="workshopID" style="display:none" class="form-control" />
+                                    
+                                   
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer align-center">
+                    <button id="btnRegSave" class="btn_custom btn_popup">@SharedHtmlLocalizer["Register"]</button>
+
+                    <button type="button" class="btn_custom" data-dismiss="modal">@SharedHtmlLocalizer["Cancel"]</button>
+                </div>
+                
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
