@@ -1,0 +1,46 @@
+﻿@media print {
+    a[href]:after {
+    content: none !important;
+  }
+    ul.acc_metadata {
+    font-size: 0.9em;
+}
+    .btn_custom,header,footer,.printItem,.delete,.collapseBtn{display:none;}
+ .workshopAcc .panel,table.customTable td,table.customTable th{
+    background-color: #f2f2f2 !important;
+    -webkit-print-color-adjust: exact;
+  }
+ table.customTable td,table.customTable th{
+     width:auto;
+    -webkit-print-color-adjust: exact;
+  }
+ .panel,.panel-collapse{width:100%;float:left;}
+ .workshopAcc .panel{
+    border-color: #ddd !important;
+    -webkit-
+        -color-adjust: exact;
+  }
+ .workshopAcc .panel-heading{
+     background-color: #f0edeb !important;
+     border-color: #ddd !important;
+    -webkit-print-color-adjust: exact;
+     -moz-print-color-adjust: exact;
+ }
+
+    .pageTitle
+    {
+        color: #d52f54 !important;
+        -webkit-print-color-adjust: exact;
+    }
+    .btn_popup {
+        background-color: #4c4c4c !important;
+        color:#fff !important;
+        -webkit-print-color-adjust: exact;
+    }
+    .btn_popup span,.collapseBtn i {
+        color:#fff !important;
+        -webkit-print-color-adjust: exact;
+    }
+    .SignOut{display:none;}
+
+}
